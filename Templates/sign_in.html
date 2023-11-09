@@ -1,0 +1,74 @@
+{% extends "Home.html" %}
+
+{% block content %}
+
+<style>
+.form-container {
+    display: flex;
+    margin-left: 500px;
+    margin-right: 500px;
+    margin-top: 150px;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: inline-block;
+    text-align: right;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    padding: 5px;
+    margin: 5px 0;
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.errorlist {
+    color: red;
+    list-style: none;
+    padding: 0;
+    margin: 5px 0;
+}
+
+.helptext {
+    color: red; 
+    font-style: italic;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+button {
+    padding: 10px;
+    background-color: #4CAF50; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out; 
+}
+
+button:hover {
+    background-color: #45a049; 
+}
+</style> 
+
+<div class="form-container">
+    <form method="POST" action="{% url 'signin' %}">
+        {% csrf_token %} 
+        <p>
+        {{ form.as_p}}
+        </p>
+        <button type="submit">Sign In</button>
+    </form>
+</div>
+
+{% endblock content %}

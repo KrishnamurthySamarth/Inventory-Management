@@ -1,0 +1,56 @@
+{% extends "Home.html" %}
+
+{% block content %}\
+
+<style>
+    label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: inline-block;
+        text-align: right;
+    }
+    
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+    
+        padding: 2px;
+        margin: 5px 0;
+        display: inline-block;
+    }
+    
+    .errorlist {
+        color: red;
+        list-style: none;
+        padding: 0;
+        margin: 5px 0;
+    }
+    
+    .helptext {
+        color: #888;
+        font-style: italic;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+    
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    </style>
+
+
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}  
+    <button type="submit">Submit</button>
+</form>
+
+{% endblock content %}\
+
+
+
+

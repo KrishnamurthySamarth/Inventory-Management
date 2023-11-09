@@ -1,0 +1,66 @@
+{% extends "Home.html" %}
+
+{% block content %}
+
+<form method="post" action="{% url 'custom_logout' %}">
+    {% csrf_token %}
+    <button type="submit">Log Out</button>
+</form>
+
+<style>
+    .center{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 60px;
+        margin-top: 5px;
+    }
+</style>
+
+<table class="table table-hover" style="margin-top: 30px;">
+    <thead>
+        <tr>
+            <th>ITEM NAME</th>
+            <th>QUANTITY</th>
+            <th>CURRENT UNIT PRICE</th>
+            <th>RECEIVED FROM</th>
+            <th>RECEIVED PRICE</th>
+            <th>Edit/Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in inventory_items  %}
+        <tr>
+            <td>{{ item.item_name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.Unit_price }}</td>
+            <td>{{ item.dispatched_from }}</td>
+            <td>{{ item.dispatched_price }}</td>
+            <td>    <form method="post" action="{% url 'edit' %}" style="display: inline-block;">
+                    {% csrf_token %}
+                    <input type="hidden" name="item_name" value="{{ item.item_name }}">
+                    <button type="submit"><i class="fa-solid fa-pen"></i></button>
+                    </form>
+                    <form method="post" action="{% url 'del' %}" style="display: inline-block;">
+                        {% csrf_token %}
+                        <input type="hidden" name="item_name" value="{{ item.item_name }}">
+                        <button type="submit"><i class="fa-solid fa-trash"></i></button>
+                    </form>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+  </table>
+
+        {% if is_empty %}
+            
+        {% endif %}
+
+    <form method="post" action="{% url 'add' %}">
+        {% csrf_token %} 
+        <div class="center">
+        <button type="submit">Add Items</button>
+        </div>
+      </form>
+{% endblock content %}

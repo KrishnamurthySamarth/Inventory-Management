@@ -1,0 +1,65 @@
+{% extends "Home.html" %}
+
+{% block content %}
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+        }
+
+       
+        form {
+            text-align: left; 
+        }
+
+        
+        table {
+            border-collapse: collapse; 
+            margin-top: 10px; 
+        }
+
+        th, td {
+            padding: 5px; 
+        }
+
+        th {
+            text-align: right;
+        }
+
+        label {
+            font-weight: bold; 
+        }
+    </style>
+    <h2 style="text-align: center; margin-top: 10px;">Add To Inventory</h2>
+    <div class="container"> 
+         
+        <form method="POST" action="{% url 'adding'  %}">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <th><label for="item_name">Item Name:</label></th>
+                    <td><input type="text" id="item_name" name="item_name" required></td>
+                </tr>
+                <tr>
+                    <th><label for="quantity">Quantity:</label></th>
+                    <td><input type="number" id="quantity" name="quantity" required></td>
+                </tr>
+                <tr>
+                    <th><label for="unit_price">Unit Price:</label></th>
+                    <td><input type="number" id="unit_price" name="unit_price" required></td>
+                </tr>
+                <tr>
+                    <th><label for="dispatched_from">Dispatched From:</label></th>
+                    <td><input type="text" id="dispatched_from" name="dispatched_from" required></td>
+                </tr>
+                <tr>
+                    <th><label for="dispatched_price">Dispatched Price:</label></th>
+                    <td><input type="number" id="dispatched_price" name="dispatched_price" required></td>
+                </tr>
+            </table>
+            <button type="submit">Add Item</button>
+        </form>
+    </div>
+   
+{% endblock content %}
