@@ -5,9 +5,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib.auth import logout
+from django.contrib import messages
 
-
-# Create your views here.
 def Home(request):
     return render(request , 'Home.html')
 
@@ -15,30 +14,27 @@ def contact_us(request):
     return render(request,'contact.html')
 
 def sign_up(request):
-    valid = False
     if request.method == 'POST':
         form = Login_form(request.POST)
         if form.is_valid():
-            valid = True
             user = form.save()
-            return redirect('sign_in')
+            messages.success(request, "Account Created Successfully. Please Login")
+            return redirect('Home')
+
     else:
         form = Login_form()
-    return render(request, 'login.html', {'form':form,'valid':valid})
+    return render(request, 'login.html', {'form':form})
 
 def sign_in(request):
-    valid = False
     if request.method=="POST":
-        form = Signin_form(request, data = request.POST)
+        form = Signin_form(request, data = request.POST) 
         if form.is_valid():
-            print("yes")
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            print("YES")
             user = authenticate(request,username=username, password=password)
             if user is not None:
-                valid = True
                 login(request, user)
+                messages.success(request, "Siggned in Succesfully")
                 return HttpResponseRedirect('manage_page')
         else:
             message = "user does not exist"
@@ -46,7 +42,7 @@ def sign_in(request):
             return render(request,'sign_in.html',{'message':message,'form':form})
     else:
         form = Signin_form()
-    return render(request, 'sign_in.html', {'form':form,'valid':valid})
+    return render(request, 'sign_in.html', {'form':form})
 
 def manage_page (request):
     is_empty = False
@@ -80,7 +76,7 @@ def items_to_add(request):
 
         added = Inventory_items(item_name=item_name,quantity=quantity,Unit_price=unit_price,dispatched_from=dispatched_from,dispatched_price=dispatched_price, user=request.user)
         added.save()
-    
+        messages.success(request, "Item Added!")
         return HttpResponseRedirect(reverse('manage_page'))
 
     else:
@@ -97,6 +93,7 @@ def edit_item(request):
 
             if form.is_valid():
                 form.save()
+                messages.info(request, "Updated!")
                 return HttpResponseRedirect(reverse('manage_page'))
     else:
         req_item = request.GET.get('item_name')  
@@ -113,11 +110,13 @@ def delete_item(request):
         req_item = request.POST.get('item_name')
         items = Inventory_items.objects.get(item_name=req_item, user=request.user)
         items.delete()
+        messages.error(request, "Item Deleted!")
         return HttpResponseRedirect(reverse('manage_page'))
 
 
 def custom_logout(request):
     logout(request)
+    messages.success(request, "Logged Out Succesfully")
     return redirect('Home')
 
         
